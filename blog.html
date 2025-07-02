@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Anxiety Project</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header .logo {
+      font-weight: bold;
+      font-size: 1.5em;
+      color: #004080;
+    }
+
+    nav a {
+      margin-left: 1em;
+      text-decoration: none;
+      color: #004080;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ff9800;
+    }
+
+    .hero {
+      background: url('images/hero-background.jpeg') no-repeat center center/cover;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 4em;
+      color: white;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 0;
+    }
+
+    .hero-content {
+      z-index: 1;
+      max-width: 700px;
+    }
+
+    .hero h1 {
+      font-size: 3em;
+      margin: 0 0 0.5em;
+      color: #ffc107;
+    }
+
+    .hero p {
+      font-size: 1.2em;
+    }
+
+    section {
+  padding: 2em;
+  max-width: 90%;
+  margin: 2em auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+    h2 {
+      color: #004080;
+    }
+
+    .strategy-img {
+  width: 500px; /* Aumentado aún más */
+  max-width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+   .strategy-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+
+   .charts-row {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  flex-wrap: wrap;
+  margin-top: 2em;
+}
+
+.chart-container {
+  width: 295px;
+  max-height: 350px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1em;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 300px !important;
+}
+    .tips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    justify-content: center;
+    margin-top: 1.5em;
+  }
+
+  .tip-card {
+    background-color: #ffffff;
+    border-left: 6px solid #4a90e2;
+    border-radius: 12px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    padding: 1.5em;
+    width: 100%;
+    max-width: 340px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: fadeInUp 0.8s ease both;
+  }
+
+  .tip-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
+  }
+
+  .tip-card h3 {
+    margin-top: 0;
+    color: #004080;
+    font-size: 1.1em;
+  }
+
+  /* Fade-in animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .interview-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  flex-wrap: wrap;
+  margin-top: 2em;
+}
+
+.interview-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  padding: 1.5em;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.interview-card:hover {
+  transform: translateY(-5px);
+}
+
+.interview-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1em;
+}
+
+.interview-content .emoji {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+}
+
+.interview-content h3 {
+  margin: 0.5em 0;
+  color: #004080;
+}
+
+.interview-content audio {
+  width: 100%;
+  margin-top: 1em;
+}
+   .site-footer {
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    padding: 2em 1em;
+    margin-top: 3em;
+    font-size: 0.95em;
+  }
+
+  .site-footer a {
+    color: #99cfff;
+    text-decoration: none;
+  }
+
+  .site-footer a:hover {
+    text-decoration: underline;
+  }
+
+  .footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .credits-section {
+    background-color: #eef6ff;
+    padding: 3em 1em;
+    text-align: center;
+  }
+
+  .credits-section h2 {
+    color: #004080;
+    margin-bottom: 1.5em;
+  }
+
+  .credits-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2em;
+  }
+
+  .credit-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 2em;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    text-align: left;
+  }
+
+  .credit-card h3 {
+    color: #003366;
+    margin-bottom: 0.5em;
+  }
+
+  .credit-card p, .credit-card ul {
+    color: #444;
+    font-size: 0.95em;
+    margin: 0;
+  }
+
+  .credit-card ul {
+    padding-left: 1.2em;
+    list-style-type: disc;
+  }
+
+  .credit-card li {
+    margin-bottom: 0.4em;
+  }
+   .strategy-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+    margin-top: 2em;
+  }
+
+  .strategy-card {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, #eeeff0, #ffffff);
+    border-radius: 18px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    padding: 2em;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .strategy-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  }
+
+  .strategy-card.left {
+    flex-direction: row;
+  }
+
+  .strategy-card.right {
+    flex-direction: row-reverse;
+  }
+
+  .strategy-card img {
+    width: 420px;
+    height: auto;
+    border-radius: 14px;
+    margin: 1em;
+  }
+
+  .strategy-content {
+    flex: 1;
+    min-width: 280px;
+    padding: 1em;
+  }
+
+  .strategy-content h3 {
+    margin-top: 0;
+    color: #1a237e;
+  }
+
+  .strategy-content ul {
+    padding-left: 1.5em;
+    margin-top: 0.5em;
+  }
+
+  .strategy-content ul li {
+    margin-bottom: 0.5em;
+  }
+
+  .strategy-content p {
+    margin-top: 1em;
+    color: #333;
+  }
+  
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Social Anxiety | UT Languages</div>
+    <nav>
+      <a href="#intro">Home</a>
+      <a href="#context">Contextualization</a>
+      <a href="#diagnosis">Diagnosis</a>
+      <a href="#strategies">Strategies</a>
+      <a href="#tips">Tips</a>
+      <a href="#evaluation">Evaluation</a>
+      <a href="#interviews">Interviews</a>
+      <a href="#conclusions">Conclusions</a>
+      <a href="#credits">Credits</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="intro">
+    <div class="hero-content">
+      <h1>Social Anxiety in First-Semester Foreign Language Students: A Project Based on Integration</h1>
+      <p>Welcome to our final project page for the English course. Throughout the semester, we worked on a Project-Based Learning (PBL) approach to address a very common but often overlooked issue: social anxiety among university students beginning their studies in foreign languages.
+        Our main goal was to create a more comfortable and engaging environment for classmates experiencing anxiety when interacting in a foreign language, especially during their first classes. Here, we share everything we did, what we learned, and how you too can help address this situation.</p>
+    </div>
+  </section>
+
+   <section id="context">
+    <h2>Problem Contextualization</h2>
+    <p><strong>What is social anxiety?</strong> Social anxiety is a type of emotional disorder characterized by an intense and persistent fear of social situations or interactions with others. In educational contexts, it can make participation, group work, and even academic performance very challenging.</p>
+    <p><strong>Why does it especially affect foreign language students?</strong> Learning a new language requires speaking, making mistakes, and being constantly exposed to others' judgment. For first-semester students, this can cause insecurity, embarrassment, or fear of ridicule—especially in classes where oral participation is frequent or mandatory.</p>
+    <p><strong>Why is it important to intervene early?</strong> The first semester is key for forming bonds, building confidence, and establishing healthy academic habits. Identifying and addressing social anxiety early can greatly improve students’ educational experience, promoting a more inclusive, respectful, and empathetic environment.</p>
+  </section>
+
+  <section id="diagnosis">
+    <h2>Initial Diagnosis – Survey Results</h2>
+    <p>To better understand the extent of social anxiety among first-semester language students, we conducted an anonymous survey during the first week of classes. The survey included questions about how students felt in social and academic settings, especially when speaking in front of others.</p>
+    <p>Sample Size: 31 students</p>
+    <p>Age Range: 17–20 years</p>
+    <p><strong>Key Questions Asked:</strong></p>
+    <ul>
+      <li>I feel insecure when I have to speak in front of a group.</li>
+      <li>I get nervous when I don’t understand everything in a conversation.</li>
+      <li>I feel tense when I know I will be the center of attention.</li>
+      <li>I worry that others will laugh at me when I speak in public.</li>
+    </ul>
+    <p><strong>Highlights from the responses:</strong></p>
+    <ul>
+      <li>Over 60% of the students reported feeling insecure or tense in social settings involving speaking.</li>
+      <li>1 out of 3 students strongly agreed they feared being laughed at when speaking in public.</li>
+      <li>Only a small portion felt relaxed or confident when participating in class discussions.</li>
+    </ul>
+    <p>These results confirmed that social anxiety was a real and relevant issue among our classmates, justifying the need for this project.</p>
+  </section>
+
+  <section id="strategies">
+  <h2>4. Implemented Strategies – Integration Games</h2>
+  <div class="strategy-cards">
+
+    <div class="strategy-card left">
+      <img src="images/simon_says.jpg" alt="Simon Says">
+      <div class="strategy-content">
+        <h3>Simon Says</h3>
+        <p>This classic game was adapted with instructions that encouraged social interaction among students. The goal was to follow commands only if they began with “Simon says,” which generated fun, engagement, and interpersonal contact.</p>
+        <p><strong>Examples of commands used:</strong></p>
+        <ul>
+          <li>Hug someone.</li>
+          <li>Touch a person with a specific characteristic (e.g., someone with glasses).</li>
+          <li>Jump, walk, make silly sounds or movements.</li>
+        </ul>
+        <p><strong>How did it help?</strong> This activity helped break the ice and build trust, reducing social tension by normalizing physical and emotional interaction in a fun way.</p>
+      </div>
+    </div>
+
+    <div class="strategy-card right">
+      <img src="images/whispers.jpg" alt="Chinese Whispers">
+      <div class="strategy-content">
+        <h3>Chinese Whispers – Written and Spoken</h3>
+        <p>We applied this game in two different ways to promote teamwork and the use of English vocabulary in an entertaining manner.</p>
+        <p><strong>Written version:</strong></p>
+        <ul>
+          <li>Students were arranged in two lines.</li>
+          <li>The first student received a verb in the present tense and had to write it on the back of the person in front.</li>
+          <li>The last student in the line had to guess the verb and write its past tense form on the board.</li>
+        </ul>
+        <p><strong>Spoken version:</strong></p>
+        <ul>
+          <li>Similar to the first, but instead of writing, students had to whisper the verb into the ear of the person ahead.</li>
+        </ul>
+        <p><strong>How did it help?</strong> Students practiced vocabulary, laughed at mistakes, and collaborated in teams, which helped reduce fear of making errors or speaking English in class.</p>
+      </div>
+    </div>
+
+    <div class="strategy-card left">
+      <img src="images/together_game.jpg" alt="Together Game">
+      <div class="strategy-content">
+        <h3>Together</h3>
+        <p>This game promoted movement, social agility, and teamwork.</p>
+        <p><strong>How it worked:</strong></p>
+        <ul>
+          <li>All students stood in the center of the classroom.</li>
+          <li>A group member would call out a number.</li>
+          <li>Students had to quickly form groups with exactly that number of people.</li>
+          <li>Those who couldn't find a group were eliminated, and the game continued until there were only a few winners left.</li>
+        </ul>
+        <p><strong>How did it help?</strong> It created spontaneous interaction and encouraged students to connect with different classmates, reducing shyness and building a sense of community.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+  <section id="tips">
+    <h2>Tips to Overcome Social Anxiety</h2>
+   <section id="tips">
+  <div class="tips-container">
+    <div class="tip-card fade-in">
+      <h3>🎭 Accept that feeling anxious is normal</h3>
+      <p>It's completely natural to feel nervous when speaking in public or interacting with new people, especially in another language. Recognizing it without judging yourself is the first step toward overcoming it.</p>
+    </div>
+    <div class="tip-card fade-in">
+      <h3>🚶 Practice gradually</h3>
+      <p>Start with small steps: saying “yes” or “no,” greeting others, or reading a short sentence. Confidence will come with time.</p>
+    </div>
+    <div class="tip-card fade-in">
+      <h3>🧘 Control your breathing</h3>
+      <p>Take slow and deep breaths. This helps reduce physical symptoms like trembling or a shaky voice.</p>
+    </div>
+    <div class="tip-card fade-in">
+      <h3>🤝 Surround yourself with supportive people</h3>
+      <p>Lean on friends to practice, share your fears, and laugh at your mistakes together.</p>
+    </div>
+    <div class="tip-card fade-in">
+      <h3>💬 Focus on the message, not the mistakes</h3>
+      <p>Making mistakes is part of learning. The most important thing is to communicate your ideas.</p>
+    </div>
+    <div class="tip-card fade-in">
+      <h3>👂 Listen and observe</h3>
+      <p>Listening to how others express themselves helps you improve without pressure.</p>
+    </div>
+    <div class="tip-card fade-in">
+      <h3>🎯 Set small goals</h3>
+      <p>Like: “This week I will ask one question in class.” These small wins build motivation.</p>
+    </div>
+  </div>
+
+  <p>These tips are meant to be applied progressively, without pressure. Go at your own pace, trusting that improvement is possible.</p>
+</section>
+  </section>
+
+  <section id="evaluation">
+  <h2>6. Final Evaluation</h2>
+  <p>Survey results before and after the project:</p>
+  <div class="charts-row">
+    <div class="chart-container">
+      <canvas id="anxietyChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="interactionChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="activitiesChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<section id="interviews">
+  <h2>7. Interviews</h2>
+  <p>Interviews were conducted with several university students to learn about their experiences, opinions, and feelings regarding social anxiety during their first semester of college. These conversations provided a more intimate and human perspective on the impact this issue has on students' academic and personal lives.</p>
+  <div class="interview-cards">
+
+    <div class="interview-card">
+      <img src="images/interview1.jpg" alt="Interviewee 1">
+      <div class="interview-content">
+        <div class="emoji">🗣️</div>
+        <h3>Entrevista 1</h3>
+        <audio controls>
+          <source src="audio/Universidad del Tolima 2.m4a" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+
+    <div class="interview-card">
+      <img src="images/interview2.jpg" alt="Interviewee 2">
+      <div class="interview-content">
+        <div class="emoji">🗣️</div>
+        <h3>Entrevista 2</h3>
+        <audio controls>
+          <source src="audio/Universidad del Tolima 3.m4a" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+  <section id="conclusions">
+    <h2>Conclusions and Recommendations</h2>
+    <p>After implementing this project throughout the semester, we reached several conclusions that highlight the importance of addressing social anxiety from the beginning of the academic journey, especially in foreign language classes.</p>
+    <p><strong>Conclusions</strong></p>
+    <ul>
+      <li>Social anxiety is a common issue among first-semester students and can negatively affect their participation and learning.</li>
+      <li>The use of interactive and playful activities as a pedagogical tool helps reduce social pressure and encourages classroom interaction.</li>
+      <li>Students responded positively to the project, reporting an increase in confidence, comfort, and participation over the semester.</li>
+      <li>Engaging in group activities allowed many students to feel part of the university community, which is key for emotional well-being. </li>
+    </ul>
+    <p><strong>Recommendations:</strong></p>
+    <ul>
+      <li>Implement integration activities during the first weeks of class, especially in new or shy student groups.</li>
+      <li>Promote environments where making mistakes is not punished but seen as a natural part of learning.</li>
+      <li>Foster empathy among classmates to build a supportive and inclusive atmosphere.</li>
+      <li>Replicate and adapt this kind of project in other courses where oral communication plays a central role.</li>
+    </ul>
+    <p>This project aimed not only to improve the academic experience but also to create a more human, inclusive, and empathetic learning community.</p>
+  </section>
+
+  <section id="credits" class="credits-section">
+  <h2>Credits and Acknowledgments</h2>
+  <div class="credits-container">
+    <div class="credit-card">
+      <h3>👥 Team Members</h3>
+      <ul>
+        <li>Laura Valentina Linares Gutiérrez</li>
+        <li>Jennifer Saenz Urueña</li>
+        <li>Heider Nicolas Ochoa</li>
+        <li>Juan Nicolas Rojas Ordoñez</li>
+      </ul>
+    </div>
+    <div class="credit-card">
+      <h3>👨‍🏫 Instructor</h3>
+      <p>Teacher Andersson Smith Garcia Cruz</p>
+    </div>
+    <div class="credit-card">
+      <h3>🏛️ Institution</h3>
+      <p>University of Tolima<br>Faculty of Educational Sciences<br>Academic Period: July 2025</p>
+    </div>
+    <div class="credit-card">
+      <h3>🙏 Special Thanks</h3>
+      <p>To all the students who participated and shared their experiences, and everyone who contributed to this project.</p>
+    </div>
+  </div>
+</section>
+
+  <script>
+    const ctx1 = document.getElementById('anxietyChart').getContext('2d');
+    const ctx2 = document.getElementById('interactionChart').getContext('2d');
+    const ctx3 = document.getElementById('activitiesChart').getContext('2d');
+
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['Yes, completely', 'Yes, partially', 'No'],
+        datasets: [{
+          label: 'Identified with Social Anxiety',
+          data: [47, 53, 0],
+          backgroundColor: ['#4a90e2', '#7db9f5', '#ccc']
+        }]
+      }
+    });
+
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Much easier', 'A bit easier', 'Same as before'],
+        datasets: [{
+          label: 'Interaction after project',
+          data: [47, 35, 18],
+          backgroundColor: ['#4caf50', '#81c784', '#ccc']
+        }]
+      }
+    });
+
+    new Chart(ctx3, {
+      type: 'pie',
+      data: {
+        labels: ['Yes', 'Maybe', 'No'],
+        datasets: [{
+          label: 'Want more activities?',
+          data: [65, 35, 0],
+          backgroundColor: ['#ff9800', '#ffcc80', '#ccc']
+        }]
+      }
+    });
+  </script>
+  <footer class="site-footer">
+  <div class="footer-container">
+    <p>&copy; 2025 University of Tolima - Faculty of Educational Sciences</p>
+    <p>Project developed by Foreign Languages ​​- English students</p>
+    <p>Contacto: <a href="mailto:project.anxiety">project.anxiety</a></p>
+  </div>
+</footer>
+</body>
+</html>
